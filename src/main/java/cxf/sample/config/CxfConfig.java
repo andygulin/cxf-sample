@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,8 +63,8 @@ public class CxfConfig {
         endpoint.setBus(bus);
         endpoint.setServiceBeans(Arrays.asList(messageService(), userService()));
         endpoint.setAddress("/");
-        endpoint.setInInterceptors(Arrays.asList(loggingInInterceptor()));
-        endpoint.setOutInterceptors(Arrays.asList(loggingOutInterceptor()));
+        endpoint.setInInterceptors(Collections.singletonList(loggingInInterceptor()));
+        endpoint.setOutInterceptors(Collections.singletonList(loggingOutInterceptor()));
         Map<Object, Object> extMaps = new HashMap<>(2);
         extMaps.put("json", "application/json");
         extMaps.put("xml", "application/xml");
