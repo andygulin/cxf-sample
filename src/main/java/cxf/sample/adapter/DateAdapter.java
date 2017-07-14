@@ -18,5 +18,4 @@ public class DateAdapter extends XmlAdapter<String, Date> {
     public String marshal(Date v) throws Exception {
         return dateFormat.format(v);
     }
-
 }
