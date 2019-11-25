@@ -10,5 +10,4 @@ public class MessageServiceImpl implements MessageService {
     public Response hello() {
         return Response.ok("hello").build();
     }
-
 }

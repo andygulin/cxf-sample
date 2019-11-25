@@ -23,29 +23,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response all() {
         final String sql = "SELECT * FROM `user` ORDER BY createdAt DESC";
-        System.out.println(jdbcTemplate);
-        List<User> users;
         try {
-            users = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
+            List<User> users = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
+            return Response.ok(new GenericEntity<List<User>>(users) {
+            }).build();
         } catch (EmptyResultDataAccessException e) {
             return Response.ok(new GenericEntity<List<User>>(new ArrayList<>()) {
             }).build();
         }
-        return Response.ok(new GenericEntity<List<User>>(users) {
-        }).build();
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
     @Override
     public Response get(Integer id) {
         final String sql = "SELECT * FROM `user` WHERE id=?";
-        User user;
         try {
-            user = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(User.class), id);
+            User user = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(User.class), id);
+            return Response.ok(user).build();
         } catch (EmptyResultDataAccessException e) {
             return Response.ok(new User()).build();
         }
-        return Response.ok(user).build();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -64,5 +61,4 @@ public class UserServiceImpl implements UserService {
     public Response hello() {
         return Response.ok("hello").build();
     }
-
 }

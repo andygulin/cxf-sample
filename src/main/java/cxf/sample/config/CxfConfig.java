@@ -6,8 +6,7 @@ import cxf.sample.webservice.impl.MessageServiceImpl;
 import cxf.sample.webservice.impl.UserServiceImpl;
 import org.apache.cxf.Bus;
 import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.provider.json.JSONProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,8 @@ public class CxfConfig {
     private Bus bus;
 
     @Bean
-    public LoggingInInterceptor loggingInInterceptor() {
-        return new LoggingInInterceptor();
-    }
-
-    @Bean
-    public LoggingOutInterceptor loggingOutInterceptor() {
-        return new LoggingOutInterceptor();
+    public LoggingFeature loggingFeature() {
+        return new LoggingFeature();
     }
 
     @Bean
@@ -63,8 +57,7 @@ public class CxfConfig {
         endpoint.setBus(bus);
         endpoint.setServiceBeans(Arrays.asList(messageService(), userService()));
         endpoint.setAddress("/");
-        endpoint.setInInterceptors(Collections.singletonList(loggingInInterceptor()));
-        endpoint.setOutInterceptors(Collections.singletonList(loggingOutInterceptor()));
+        endpoint.setFeatures(Collections.singletonList(loggingFeature()));
         Map<Object, Object> extMaps = new HashMap<>(2);
         extMaps.put("json", "application/json");
         extMaps.put("xml", "application/xml");
